@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+//using System.Linq;
 using System.Web;
 using MySql.Data.MySqlClient;
 using MySql.Web;
@@ -13,7 +13,7 @@ using System.Data;
 public class ConexionBD
 {
     //Cadena de conexion
-    public static String cadenaConexion = "Server=localhost;Database=purificadora;Uid=root;Pwd=Madrid96";
+    public static String cadenaConexion = "Server=localhost;Database=purificadora;Uid=root;Pwd=1234";
 
     //Generando la aplicacion de la cadena de conexion
     static MySqlConnection conectando = new MySqlConnection(cadenaConexion);
@@ -41,6 +41,30 @@ public class ConexionBD
         }
         conectando.Close();
         return R;
+    }
+
+    //Metodo Para Guardar Empleados
+    public static int AlmacenaEmpleados(params String[] Registro)
+    {
+        conectando.Open();
+        MySqlCommand registra = new MySqlCommand("insert into empleados values(0, @nombre, @apellidos, @tipo, @num_licencia, @edad )",conectando);
+        registra.Parameters.AddWithValue("@nombre",Registro[0]);
+        registra.Parameters.AddWithValue("@apellidos", Registro[1]);
+        registra.Parameters.AddWithValue("@tipo", Registro[2]);
+        registra.Parameters.AddWithValue("@num_licencia",Registro[3]);
+        registra.Parameters.AddWithValue("@edad", Registro[4]);
+        int R = 0;
+        try
+        {
+            R = registra.ExecuteNonQuery();
+        }
+        catch (Exception e)
+        {
+
+        }
+        conectando.Close();
+        return R;
+
     }
 
     public ConexionBD()
